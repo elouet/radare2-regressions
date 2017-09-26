@@ -398,3 +398,12 @@ func.foo.cc=cdecl
 func.foo.ret=int
 '
 run_test
+NAME="self-referencing struct"
+FILE=-
+CMDS='pf._NT_TIB ? (_NT_TIB)Self
+pf._NT_TIB
+'
+EXPECT_ERR=''
+EXPECT='
+'
+run_test
