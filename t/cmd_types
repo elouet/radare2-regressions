@@ -398,3 +398,23 @@ func.foo.cc=cdecl
 func.foo.ret=int
 '
 run_test
+NAME="1 byte enum endianness"
+FILE='malloc://0x10'
+CMDS='e cfg.bigendian=true
+wb 4142434431323334
+"td enum ascii{ LETTER_A=0x41, LETTER_D=0x44, DIGIT_1=0x31, DIGIT_4=0x34}"
+pf.somestring [1]E[1]E[1]E[1]E[1]E[1]E[1]E[1]E (ascii)B1 (ascii)B2 (ascii)B3 (ascii)B4 (ascii)B5 (ascii)B6 (ascii)B7 (ascii)B8
+pf.somestring
+'
+EXPECT_ERR=''
+EXPECT=' B1 : 0x00000000 = B1 (enum ascii) = 0x41 ; LETTER_A
+ B2 : 0x00000001 = B2 (enum ascii) = 0x42
+ B3 : 0x00000002 = B3 (enum ascii) = 0x43
+ B4 : 0x00000003 = B4 (enum ascii) = 0x44 ; LETTER_D
+ B5 : 0x00000004 = B5 (enum ascii) = 0x31 ; DIGIT_1
+ B6 : 0x00000005 = B6 (enum ascii) = 0x32
+ B7 : 0x00000006 = B7 (enum ascii) = 0x33
+ B8 : 0x00000007 = B8 (enum ascii) = 0x34 ; DIGIT_4
+'
+run_test
+
